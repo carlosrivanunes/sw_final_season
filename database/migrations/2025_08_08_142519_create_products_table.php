@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->string('name');
             $table->integer('quantity');
-            $table->decimal('price', 8, 2);
+            $table->float('price');
             $table->text('description')->nullable();
             $table->timestamps();
         });
