@@ -33,7 +33,22 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request) : RedirectResponse
     {
-        Product::create($request->validated());
+        // if ($request->file('image')) {
+        //     $file = $request->file('image')->store('products', 'public');
+        //     $request->image = $file;
+        // }
+
+        $product = new Product;
+        $product->code = $request->code;
+        $product->name = $request->name;
+        $product->quantity = $request->quantity;
+        $product->price = $request->price;
+        $product->description = $request->description;
+        $imagePath = $request->file('image')->store('products', 'public');
+        $product->image = $imagePath; // Store the relative path
+        $product->save();
+
+        //Product::create($request->validated());
 
         return redirect()->route('products.index')
                 ->withSuccess('New product is added successfully.');

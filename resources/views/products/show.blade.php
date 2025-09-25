@@ -50,6 +50,17 @@
                             {{ $product->description }}
                         </div>
                     </div>
+
+                    <div class="row">
+                        <label for="image" class="col-md-4 col-form-label text-md-end text-start"><strong>Image:</strong></label>
+                        <div class="col-md-6" style="line-height: 35px;">
+                            @if($product->image)
+                                <img src="{{ asset('storage/' . $product->image) }}" width="200">
+                            @else
+                                <span>-</span>
+                            @endif
+                        </div>
+                    </div>
         
             </div>
         </div>

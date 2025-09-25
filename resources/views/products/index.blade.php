@@ -1,29 +1,82 @@
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Simple Laravel 12 CRUD Application Tutorial - AllPHPTricks.com</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" crossorigin="anonymous">
-</head>
-<body>   
+@extends('layouts.app')
 
-    <div class="container">
-        <h3 class=" mt-3">Simple Laravel 12 CRUD Application Tutorial - <a href="https://www.allphptricks.com/">AllPHPTricks.com</a></h3>
-            @yield('content')
-            <div class="row justify-content-center text-center mt-3">
-                <div class="col-md-12">
-                    <p>Back to Tutorial: 
-                        <a href="https://www.allphptricks.com/simple-laravel-12-crud-application-tutorial/"><strong>Tutorial Link</strong></a>
-                    </p>
-                    <p>
-                        For More Web Development Tutorials Visit: <a href="https://www.allphptricks.com/"><strong>AllPHPTricks.com</strong></a>
-                    </p>
-                </div>
+@section('content')
+
+<div class="row justify-content-center mt-3">
+    <div class="col-md-12">
+
+        @if (session('success'))
+            <div class="alert alert-success" role="alert">
+                {{ session('success') }}
             </div>
-    </div>
+        @endif
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-</body>
-</html>
+        <div class="card">
+            <div class="card-header">Product List</div>
+            <div class="card-body">
+                @role('admin')
+                    <a href="{{ route('products.create') }}" class="btn btn-success btn-sm my-2">Add New Product</a>
+                @endrole
+                <table class="table table-striped table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">S#</th>
+                        <th scope="col">Code</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Imagem</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($products as $product)
+                        <tr>
+                            <th scope="row">{{ $loop->iteration }}</th>
+                            <td>{{ $product->code }}</td>
+                            <td>{{ $product->name }}</td>
+                            <td>{{ $product->quantity }}</td>
+                            <td>{{ $product->price }}</td>
+                            <td>
+                                @if($product->image)
+                                    <img src="{{ asset('storage/' . $product->image) }}" width="60">
+                                @else
+                                    -
+                                @endif
+                            </td>
+                            <td>
+                                <form action="{{ route('products.destroy', $product->id) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <a href="{{ route('products.show', $product->id) }}" class="btn btn-warning btn-sm">Show</a>
+
+                                    @role('admin')
+                                        <a href="{{ route('products.edit', $product) }}" class="btn btn-primary btn-sm">Editar</a>
+                                        <form action="{{ route('products.destroy', $product) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-danger btn-sm">Excluir</button>
+                                        </form>
+                                    @endrole
+                                </form>
+                            </td>
+                        </tr>
+                        @empty
+                            <td colspan="7">
+                                <span class="text-danger">
+                                    <strong>No Product Found!</strong>
+                                </span>
+                            </td>
+                        @endforelse
+                    </tbody>
+                  </table>
+
+                  {{ $products->links() }}
+
+            </div>
+        </div>
+    </div>    
+</div>
+    
+@endsection
