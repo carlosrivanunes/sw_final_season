@@ -14,9 +14,9 @@
         <div class="card">
             <div class="card-header">Product List</div>
             <div class="card-body">
-                @role('admin')
+                @can('create')
                     <a href="{{ route('products.create') }}" class="btn btn-success btn-sm my-2">Add New Product</a>
-                @endrole
+                @endcan
                 <table class="table table-striped table-bordered">
                     <thead>
                       <tr>
@@ -45,21 +45,17 @@
                                 @endif
                             </td>
                             <td>
-                                <form action="{{ route('products.destroy', $product->id) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-
-                                    <a href="{{ route('products.show', $product->id) }}" class="btn btn-warning btn-sm">Show</a>
-
-                                    @role('admin')
-                                        <a href="{{ route('products.edit', $product) }}" class="btn btn-primary btn-sm">Editar</a>
-                                        <form action="{{ route('products.destroy', $product) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-danger btn-sm">Excluir</button>
-                                        </form>
-                                    @endrole
-                                </form>
+                                <a href="{{ route('products.show', $product->id) }}" class="btn btn-warning btn-sm">Show</a>
+                                @can('edit')
+                                    <a href="{{ route('products.edit', $product) }}" class="btn btn-primary btn-sm">Editar</a>
+                                @endcan
+                                @can('delete')
+                                    <form action="{{ route('products.destroy', $product) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger btn-sm">Excluir</button>
+                                    </form>
+                                @endcan
                             </td>
                         </tr>
                         @empty

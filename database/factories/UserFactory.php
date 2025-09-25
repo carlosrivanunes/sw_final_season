@@ -27,7 +27,8 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => bcrypt('password'), // ou 'password' => 'password'
+            'is_admin' => false, // pode ser omitido se o seeder define
             'remember_token' => Str::random(10),
         ];
     }

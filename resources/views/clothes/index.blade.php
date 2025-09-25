@@ -6,9 +6,9 @@
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-    @role('admin')
+     @can('create')
         <a href="{{ route('clothes.create') }}" class="btn btn-success mb-3">Adicionar Roupa</a>
-    @endrole
+    @endcan
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -42,14 +42,16 @@
                     </td>
                     <td>
                         <a href="{{ route('clothes.show', $cloth) }}" class="btn btn-info btn-sm">Ver</a>
-                        @role('admin')
+                        @can('edit')
                             <a href="{{ route('clothes.edit', $cloth) }}" class="btn btn-primary btn-sm">Editar</a>
+                        @endcan
+                        @can('delete')
                             <form action="{{ route('clothes.destroy', $cloth) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza?')">Excluir</button>
                             </form>
-                        @endrole
+                        @endcan
                     </td>
                 </tr>
             @empty
