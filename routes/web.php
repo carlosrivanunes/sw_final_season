@@ -30,6 +30,7 @@ Route::middleware(['role:admin'])->group(function () {
 
 // Todos podem visualizar produtos
 Route::resource('products', \App\Http\Controllers\ProductController::class)->only(['index', 'show']);
-Route::resource('clothes', ClothController::class);
+
+Route::resource('cars', CarController::class);
 
 require __DIR__.'/auth.php';

@@ -7,21 +7,21 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('clothes', function (Blueprint $table) {
+        Schema::create('cars', function (Blueprint $table) {
             $table->id();
             $table->string('brand');
-            $table->string('type'); // Ex: Camiseta, Calça, Jaqueta
-            $table->string('size'); // Ex: P, M, G, GG
+            $table->string('model');
+            $table->year('year');
             $table->string('color');
-            $table->decimal('price', 8, 2);
+            $table->decimal('price', 10, 2);
             $table->integer('quantity');
-            $table->string('image')->nullable();
+            
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('clothes');
+        Schema::dropIfExists('cars');
     }
 };

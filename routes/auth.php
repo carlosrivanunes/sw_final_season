@@ -59,4 +59,4 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
 });
 
-Route::resource('clothes', ClothController::class);
+Route::resource('cars', ClothController::class);

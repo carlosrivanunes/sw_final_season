@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="{{ route('clothes.index') }}">Sistema</a>
+        <a class="navbar-brand" href="{{ route('cars.index') }}">Sistema</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -10,7 +10,7 @@
                     <a class="nav-link{{ request()->routeIs('products.*') ? ' active' : '' }}" href="{{ route('products.index') }}">Produtos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link{{ request()->routeIs('clothes.*') ? ' active' : '' }}" href="{{ route('clothes.index') }}">Roupas</a>
+                    <a class="nav-link{{ request()->routeIs('cars.*') ? ' active' : '' }}" href="{{ route('cars.index') }}">Roupas</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
