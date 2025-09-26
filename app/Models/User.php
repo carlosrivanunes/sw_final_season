@@ -46,4 +46,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'is_admin' => 'boolean',
+    ];
+
+    // Exemplo
+    public function checkAdmin()
+    {
+        if (auth()->user()->is_admin) {
+            // Usuário é admin
+            return true;
+        }
+
+        return false;
+    }
 }

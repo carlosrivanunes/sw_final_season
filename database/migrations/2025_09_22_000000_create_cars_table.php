@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->string('brand');
             $table->string('model');
-            $table->year('year');
+            $table->integer('year');
             $table->string('color');
             $table->decimal('price', 10, 2);
             $table->integer('quantity');
