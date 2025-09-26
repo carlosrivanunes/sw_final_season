@@ -1,78 +1,89 @@
-
-
 @extends('layouts.app')
 
 @section('content')
-
-<div class="row justify-content-center mt-3">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header">
-                <div class="float-start">
+<div class="container mt-4">
+    <!-- Card principal para exibição -->
+    <div class="card border-0 shadow-sm" style="border-radius: 10px;">
+        <div class="card-body p-4">
+            <!-- Título -->
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h2 class="mb-0" style="color: #1e3a8a; font-weight: 600;">
                     Informações da Roupa
-                </div>
-                <div class="float-end">
-                    <a href="{{ route('clothes.index') }}" class="btn btn-primary btn-sm">&larr; Voltar</a>
+                </h2>
+                <a href="{{ route('clothes.index') }}" class="btn btn-secondary" style="border-radius: 6px; font-weight: 500;">
+                    Voltar
+                </a>
+            </div>
+
+            <!-- Exibição dos dados -->
+            <div class="row mb-3">
+                <label class="col-md-4 col-form-label text-md-end"><strong>Marca:</strong></label>
+                <div class="col-md-6" style="line-height: 38px; font-weight: 500;">
+                    {{ $cloth->brand }}
                 </div>
             </div>
-            <div class="card-body">
 
-                <div class="row mb-2">
-                    <label class="col-md-4 col-form-label text-md-end text-start"><strong>Marca:</strong></label>
-                    <div class="col-md-6" style="line-height: 35px;">
-                        {{ $cloth->brand }}
-                    </div>
+            <div class="row mb-3">
+                <label class="col-md-4 col-form-label text-md-end"><strong>Tipo:</strong></label>
+                <div class="col-md-6" style="line-height: 38px; font-weight: 500;">
+                    {{ $cloth->type }}
                 </div>
+            </div>
 
-                <div class="row mb-2">
-                    <label class="col-md-4 col-form-label text-md-end text-start"><strong>Tipo:</strong></label>
-                    <div class="col-md-6" style="line-height: 35px;">
-                        {{ $cloth->type }}
-                    </div>
+            <div class="row mb-3">
+                <label class="col-md-4 col-form-label text-md-end"><strong>Tamanho:</strong></label>
+                <div class="col-md-6" style="line-height: 38px; font-weight: 500;">
+                    {{ $cloth->size }}
                 </div>
+            </div>
 
-                <div class="row mb-2">
-                    <label class="col-md-4 col-form-label text-md-end text-start"><strong>Tamanho:</strong></label>
-                    <div class="col-md-6" style="line-height: 35px;">
-                        {{ $cloth->size }}
-                    </div>
+            <div class="row mb-3">
+                <label class="col-md-4 col-form-label text-md-end"><strong>Cor:</strong></label>
+                <div class="col-md-6" style="line-height: 38px; font-weight: 500;">
+                    {{ $cloth->color }}
                 </div>
+            </div>
 
-                <div class="row mb-2">
-                    <label class="col-md-4 col-form-label text-md-end text-start"><strong>Cor:</strong></label>
-                    <div class="col-md-6" style="line-height: 35px;">
-                        {{ $cloth->color }}
-                    </div>
+            <div class="row mb-3">
+                <label class="col-md-4 col-form-label text-md-end"><strong>Preço:</strong></label>
+                <div class="col-md-6" style="line-height: 38px; font-weight: 500;">
+                    R$ {{ number_format($cloth->price, 2, ',', '.') }}
                 </div>
+            </div>
 
-                <div class="row mb-2">
-                    <label class="col-md-4 col-form-label text-md-end text-start"><strong>Preço:</strong></label>
-                    <div class="col-md-6" style="line-height: 35px;">
-                        R$ {{ number_format($cloth->price, 2, ',', '.') }}
-                    </div>
+            <div class="row mb-3">
+                <label class="col-md-4 col-form-label text-md-end"><strong>Quantidade:</strong></label>
+                <div class="col-md-6" style="line-height: 38px; font-weight: 500;">
+                    {{ $cloth->quantity }}
                 </div>
+            </div>
 
-                <div class="row mb-2">
-                    <label class="col-md-4 col-form-label text-md-end text-start"><strong>Quantidade:</strong></label>
-                    <div class="col-md-6" style="line-height: 35px;">
-                        {{ $cloth->quantity }}
-                    </div>
+            <div class="row mb-3">
+                <label class="col-md-4 col-form-label text-md-end"><strong>Imagem:</strong></label>
+                <div class="col-md-6" style="line-height: 38px;">
+                    @if($cloth->image)
+                        <img src="{{ asset('storage/' . $cloth->image) }}" alt="Imagem da roupa" width="200" class="img-thumbnail" style="border-radius: 6px;">
+                    @else
+                        <span class="text-muted">-</span>
+                    @endif
                 </div>
-
-                <div class="row mb-2">
-                    <label class="col-md-4 col-form-label text-md-end text-start"><strong>Imagem:</strong></label>
-                    <div class="col-md-6" style="line-height: 35px;">
-                        @if($cloth->image)
-                            <img src="{{ asset('storage/' . $cloth->image) }}" alt="Imagem da roupa" width="200">
-                        @else
-                            <span>-</span>
-                        @endif
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
 </div>
 
+<style>
+    .card {
+        transition: box-shadow 0.2s ease;
+    }
+    
+    .card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .col-form-label {
+        font-weight: 500;
+        color: #1e3a8a;
+    }
+</style>
 @endsection

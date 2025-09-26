@@ -1,64 +1,143 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h2 class="mb-4">Lista de Roupas</h2>
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-     @can('create')
-        <a href="{{ route('clothes.create') }}" class="btn btn-success mb-3">Adicionar Roupa</a>
-    @endcan
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Marca</th>
-                <th>Tipo</th>
-                <th>Tamanho</th>
-                <th>Cor</th>
-                <th>Preço</th>
-                <th>Quantidade</th>
-                <th>Imagem</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($clothes as $cloth)
-                <tr>
-                    <td>{{ $cloth->id }}</td>
-                    <td>{{ $cloth->brand }}</td>
-                    <td>{{ $cloth->type }}</td>
-                    <td>{{ $cloth->size }}</td>
-                    <td>{{ $cloth->color }}</td>
-                    <td>R$ {{ number_format($cloth->price, 2, ',', '.') }}</td>
-                    <td>{{ $cloth->quantity }}</td>
-                    <td>
-                        @if($cloth->image)
-                            <img src="{{ asset('storage/' . $cloth->image) }}" width="60">
-                        @else
-                            -
-                        @endif
-                    </td>
-                    <td>
-                        <a href="{{ route('clothes.show', $cloth) }}" class="btn btn-info btn-sm">Ver</a>
-                        @can('edit')
-                            <a href="{{ route('clothes.edit', $cloth) }}" class="btn btn-primary btn-sm">Editar</a>
-                        @endcan
-                        @can('delete')
-                            <form action="{{ route('clothes.destroy', $cloth) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza?')">Excluir</button>
-                            </form>
-                        @endcan
-                    </td>
-                </tr>
-            @empty
-                <tr><td colspan="9">Nenhuma roupa cadastrada.</td></tr>
-            @endforelse
-        </tbody>
-    </table>
-    {{ $clothes->links() }}
+<div class="container mt-4">
+    <!-- Card principal para a lista -->
+    <div class="card border-0 shadow-sm" style="border-radius: 10px;">
+        <div class="card-body p-4">
+            <!-- Título -->
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h2 class="mb-0" style="color: #1e3a8a; font-weight: 600;">
+                    Lista de Roupas
+                </h2>
+                @can('create')
+                    <a href="{{ route('clothes.create') }}" class="btn btn-success d-flex align-items-center gap-1" style="border-radius: 6px; font-weight: 500;">
+                        Adicionar Roupa
+                    </a>
+                @endcan
+            </div>
+
+            <!-- Alert de sucesso -->
+            @if(session('success'))
+                <div class="alert alert-success d-flex align-items-center" role="alert" style="border-radius: 6px; border: none;">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <!-- Tabela responsiva -->
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Marca</th>
+                            <th>Tipo</th>
+                            <th>Tamanho</th>
+                            <th>Cor</th>
+                            <th>Preço</th>
+                            <th>Quantidade</th>
+                            <th>Imagem</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($clothes as $cloth)
+                            <tr>
+                                <td>{{ $cloth->id }}</td>
+                                <td>{{ $cloth->brand }}</td>
+                                <td>{{ $cloth->type }}</td>
+                                <td>{{ $cloth->size }}</td>
+                                <td>
+                                    <span class="badge bg-secondary">{{ $cloth->color }}</span>
+                                </td>
+                                <td>R$ {{ number_format($cloth->price, 2, ',', '.') }}</td>
+                                <td>{{ $cloth->quantity }}</td>
+                                <td>
+                                    @if($cloth->image)
+                                        <img src="{{ asset('storage/' . $cloth->image) }}" alt="Imagem da roupa" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-1 flex-wrap">
+                                        <a href="{{ route('clothes.show', $cloth) }}" class="btn btn-info btn-sm" title="Ver">
+                                            Ver
+                                        </a>
+                                        @can('edit')
+                                            <a href="{{ route('clothes.edit', $cloth) }}" class="btn btn-primary btn-sm" title="Editar">
+                                                Editar
+                                            </a>
+                                        @endcan
+                                        @can('delete')
+                                            <form action="{{ route('clothes.destroy', $cloth) }}" method="POST" style="display: inline-block;" onsubmit="return confirm('Tem certeza que deseja excluir esta roupa?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-danger btn-sm" type="submit" title="Excluir">
+                                                    Excluir
+                                                </button>
+                                            </form>
+                                        @endcan
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="9" class="text-center text-muted py-4">Nenhuma roupa cadastrada.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginação -->
+            @if($clothes->hasPages())
+                <div class="d-flex justify-content-center mt-4">
+                    {{ $clothes->links() }}
+                </div>
+            @endif
+        </div>
+    </div>
 </div>
+
+<style>
+    .table th {
+        border-top: none;
+        font-weight: 600;
+        color: #1e3a8a;
+    }
+    
+    .table td {
+        vertical-align: middle;
+    }
+    
+    .d-flex.gap-1 .btn {
+        border-radius: 4px;
+        white-space: nowrap;
+    }
+    
+    .card {
+        transition: box-shadow 0.2s ease;
+    }
+    
+    .card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Responsivo: Em mobile, ações em stack com largura total */
+    @media (max-width: 768px) {
+        .d-flex.gap-1 {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .d-flex.gap-1 .btn {
+            width: 100%;
+        }
+        
+        .table-responsive {
+            font-size: 0.9rem;
+        }
+    }
+</style>
 @endsection
